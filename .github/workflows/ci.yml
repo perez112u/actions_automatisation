@@ -14,8 +14,21 @@ jobs:
         php_extensions: gd
         version: 9.6.11
 
+    # Étape pour exécuter l'action "Code Coverage Summary"
+    - name: Code Coverage Summary
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: file.xml  # Spécifiez le chemin vers votre rapport de couverture de code
+        badge: true  # Inclure un badge de couverture de code
+        fail_below_min: true  # Échouer le workflow si le taux est inférieur au seuil minimum
+        format: markdown  # Format de sortie (markdown ou text)
+        hide_branch_rate: false  # Afficher les métriques de taux de branches
+        hide_complexity: false  # Afficher les métriques de complexité
+        indicators: true  # Inclure les indicateurs de santé
+        output: both  # Type de sortie (console, file ou both)
+        thresholds: '50 75'  # Seuils de badge et d'indicateurs (seuil inférieur et supérieur)
+
     # ... then your own project steps ...
-- name: Code Coverage Summary
-  uses: irongut/CodeCoverageSummary@v1.3.0
+
           
     
