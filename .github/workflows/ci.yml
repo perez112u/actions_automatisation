@@ -13,13 +13,14 @@ jobs:
       with:
         php_extensions: gd
         version: 9.6.11
-        coverage_cobertura: src/coverage.cobertura.xml
+        coverage_cobertura: coverage.cobertura.xml
+        extensions: xdebug mbstring
 
     # Étape pour executer l'action Code Coverage Summary
     - name: Code Coverage Summary
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        filename: src/coverage.cobertura.xml
+        filename: coverage.cobertura.xml
         badge: true 
         fail_below_min: true  
         format: markdown 
