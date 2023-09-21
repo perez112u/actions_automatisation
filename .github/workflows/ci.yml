@@ -13,6 +13,7 @@ jobs:
       with:
         php_extensions: gd
         version: 9.6.11
+        coverage_cobertura: src/coverage.cobertura.xml
 
     # Étape pour executer l'action Code Coverage Summary
     - name: Code Coverage Summary
@@ -33,8 +34,8 @@ jobs:
       uses: php-actions/phpcs@v1.0.0
       with:
         php_version: 8.1
-        path:  lib/
-        standard: phpunit.xml
+        path:  lib/ tst/
+        standard: .xml
             
       
     # ... then your own project steps ...
