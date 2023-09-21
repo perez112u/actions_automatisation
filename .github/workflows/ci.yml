@@ -14,7 +14,7 @@ jobs:
         php_extensions: gd
         version: 9.6.11
 
-    # Étape pour exécuter l'action "Code Coverage Summary"
+    # Étape pour executer l'action Code Coverage Summary
     - name: Code Coverage Summary
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
@@ -27,6 +27,15 @@ jobs:
         indicators: true 
         output: both  
         thresholds: '50 75' 
+
+    # Etape pour executer l'action PHP Code Sniffer
+    - name: PHP Code Sniffer (php-actions)
+      uses: php-actions/phpcs@v1.0.0
+      with:
+        php_version: 8.1
+        path:  lib/
+        standard: phpunit.xml
+            
       
     # ... then your own project steps ...
 
