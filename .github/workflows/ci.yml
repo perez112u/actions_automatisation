@@ -11,10 +11,9 @@ jobs:
     - uses: php-actions/composer@v6 # or alternative dependency management
     - uses: php-actions/phpunit@v3
       with:
-        php_extensions: gd
+        php_extensions: gd xdebug mbstring
         version: 9.6.11
         coverage_cobertura: coverage.cobertura.xml
-        extensions: xdebug mbstring
 
     # Étape pour executer l'action Code Coverage Summary
     - name: Code Coverage Summary
