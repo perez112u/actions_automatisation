@@ -40,6 +40,7 @@ jobs:
         path: lib/
         standard: PSR1
 
+
     # Etape pour executer l'action PHP MD
     - name: PHP Mess Detector
         uses: php-actions/phpmd@v1
