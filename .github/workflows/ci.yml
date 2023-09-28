@@ -39,6 +39,15 @@ jobs:
         php_version: 8.1
         path: lib/
         standard: PSR1
+
+    # Etape pour executer l'action PHP MD
+    - name: PHP Mess Detector
+        uses: php-actions/phpmd@v1
+        with:
+          php_version: 8.1
+          path: src/
+          output: text
+          ruleset: test/phpmd/ruleset.xml 
             
       
     # ... then your own project steps ...
