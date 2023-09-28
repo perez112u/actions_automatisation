@@ -50,7 +50,7 @@ class Controller
      * @access private
      * @var    Configuration
      */
-    private $_conf;
+    private $_configuration;
 
     /**
      * error message
@@ -161,16 +161,16 @@ class Controller
      */
     private function _init()
     {
-        $this->_conf    = new Configuration;
-        $this->_model   = new Model($this->_conf);
+        $this->_configuration    = new Configuration;
+        $this->_model   = new Model($this->_configuration);
         $this->_request = new Request;
         $this->_urlBase = $this->_request->getRequestUri();
 
         // set default language
-        $lang = $this->_conf->getKey('languagedefault');
+        $lang = $this->_configuration->getKey('languagedefault');
         I18n::setLanguageFallback($lang);
         // force default language, if language selection is disabled and a default is set
-        if (!$this->_conf->getKey('languageselection') && strlen($lang) == 2) {
+        if (!$this->_configuration->getKey('languageselection') && strlen($lang) == 2) {
             $_COOKIE['lang'] = $lang;
             setcookie('lang', $lang, 0, '', '', true);
         }
@@ -200,7 +200,7 @@ class Controller
     {
         // Ensure last paste from visitors IP address was more than configured amount of seconds ago.
         ServerSalt::setStore($this->_model->getStore());
-        TrafficLimiter::setConfiguration($this->_conf);
+        TrafficLimiter::setConfiguration($this->_configuration);
         TrafficLimiter::setStore($this->_model->getStore());
         try {
             TrafficLimiter::canPass();
@@ -218,7 +218,7 @@ class Controller
             $this->returnMessage(1, I18n::_('Invalid data.'));
             return;
         }
-        $sizelimit = $this->_conf->getKey('sizelimit');
+        $sizelimit = $this->_configuration->getKey('sizelimit');
         // Ensure content is not too big.
         if (strlen($data['ct']) > $sizelimit) {
             $this->returnMessage(
@@ -341,7 +341,7 @@ class Controller
         header('Expires: ' . $time);
         header('Last-Modified: ' . $time);
         header('Vary: Accept');
-        header('Content-Security-Policy: ' . $this->_conf->getKey('cspheader'));
+        header('Content-Security-Policy: ' . $this->_configuration->getKey('cspheader'));
         header('Cross-Origin-Resource-Policy: same-origin');
         header('Cross-Origin-Embedder-Policy: require-corp');
         // disabled, because it prevents links from a paste to the same site to
@@ -356,16 +356,16 @@ class Controller
 
         // label all the expiration options
         $expire = array();
-        foreach ($this->_conf->getSection('expire_options') as $time => $seconds) {
+        foreach ($this->_configuration->getSection('expire_options') as $time => $seconds) {
             $expire[$time] = ($seconds == 0) ? I18n::_(ucfirst($time)) : Filter::formatHumanReadableTime($time);
         }
 
         // translate all the formatter options
-        $formatters = array_map('PrivateBin\\I18n::_', $this->_conf->getSection('formatter_options'));
+        $formatters = array_map('PrivateBin\\I18n::_', $this->_configuration->getSection('formatter_options'));
 
         // set language cookie if that functionality was enabled
         $languageselection = '';
-        if ($this->_conf->getKey('languageselection')) {
+        if ($this->_configuration->getKey('languageselection')) {
             $languageselection = I18n::getLanguage();
             setcookie('lang', $languageselection, 0, '', '', true);
         }
@@ -377,44 +377,44 @@ class Controller
                 '; sandbox allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads',
             ),
             '',
-            $this->_conf->getKey('cspheader')
+            $this->_configuration->getKey('cspheader')
         );
 
         $page = new View;
         $page->assign('CSPHEADER', $metacspheader);
         $page->assign('ERROR', I18n::_($this->_error));
-        $page->assign('NAME', $this->_conf->getKey('name'));
+        $page->assign('NAME', $this->_configuration->getKey('name'));
         if ($this->_request->getOperation() === 'yourlsproxy') {
             $page->assign('SHORTURL', $this->_status);
             $page->draw('yourlsproxy');
             return;
         }
-        $page->assign('BASEPATH', I18n::_($this->_conf->getKey('basepath')));
+        $page->assign('BASEPATH', I18n::_($this->_configuration->getKey('basepath')));
         $page->assign('STATUS', I18n::_($this->_status));
         $page->assign('VERSION', self::VERSION);
-        $page->assign('DISCUSSION', $this->_conf->getKey('discussion'));
-        $page->assign('OPENDISCUSSION', $this->_conf->getKey('opendiscussion'));
+        $page->assign('DISCUSSION', $this->_configuration->getKey('discussion'));
+        $page->assign('OPENDISCUSSION', $this->_configuration->getKey('opendiscussion'));
         $page->assign('MARKDOWN', array_key_exists('markdown', $formatters));
         $page->assign('SYNTAXHIGHLIGHTING', array_key_exists('syntaxhighlighting', $formatters));
-        $page->assign('SYNTAXHIGHLIGHTINGTHEME', $this->_conf->getKey('syntaxhighlightingtheme'));
+        $page->assign('SYNTAXHIGHLIGHTINGTHEME', $this->_configuration->getKey('syntaxhighlightingtheme'));
         $page->assign('FORMATTER', $formatters);
-        $page->assign('FORMATTERDEFAULT', $this->_conf->getKey('defaultformatter'));
-        $page->assign('INFO', I18n::_(str_replace("'", '"', $this->_conf->getKey('info'))));
-        $page->assign('NOTICE', I18n::_($this->_conf->getKey('notice')));
-        $page->assign('BURNAFTERREADINGSELECTED', $this->_conf->getKey('burnafterreadingselected'));
-        $page->assign('PASSWORD', $this->_conf->getKey('password'));
-        $page->assign('FILEUPLOAD', $this->_conf->getKey('fileupload'));
-        $page->assign('ZEROBINCOMPATIBILITY', $this->_conf->getKey('zerobincompatibility'));
+        $page->assign('FORMATTERDEFAULT', $this->_configuration->getKey('defaultformatter'));
+        $page->assign('INFO', I18n::_(str_replace("'", '"', $this->_configuration->getKey('info'))));
+        $page->assign('NOTICE', I18n::_($this->_configuration->getKey('notice')));
+        $page->assign('BURNAFTERREADINGSELECTED', $this->_configuration->getKey('burnafterreadingselected'));
+        $page->assign('PASSWORD', $this->_configuration->getKey('password'));
+        $page->assign('FILEUPLOAD', $this->_configuration->getKey('fileupload'));
+        $page->assign('ZEROBINCOMPATIBILITY', $this->_configuration->getKey('zerobincompatibility'));
         $page->assign('LANGUAGESELECTION', $languageselection);
         $page->assign('LANGUAGES', I18n::getLanguageLabels(I18n::getAvailableLanguages()));
         $page->assign('EXPIRE', $expire);
-        $page->assign('EXPIREDEFAULT', $this->_conf->getKey('default', 'expire'));
-        $page->assign('URLSHORTENER', $this->_conf->getKey('urlshortener'));
-        $page->assign('QRCODE', $this->_conf->getKey('qrcode'));
-        $page->assign('HTTPWARNING', $this->_conf->getKey('httpwarning'));
+        $page->assign('EXPIREDEFAULT', $this->_configuration->getKey('default', 'expire'));
+        $page->assign('URLSHORTENER', $this->_configuration->getKey('urlshortener'));
+        $page->assign('QRCODE', $this->_configuration->getKey('qrcode'));
+        $page->assign('HTTPWARNING', $this->_configuration->getKey('httpwarning'));
         $page->assign('HTTPSLINK', 'https://' . $this->_request->getHost() . $this->_request->getRequestUri());
-        $page->assign('COMPRESSION', $this->_conf->getKey('compression'));
-        $page->draw($this->_conf->getKey('template'));
+        $page->assign('COMPRESSION', $this->_configuration->getKey('compression'));
+        $page->draw($this->_configuration->getKey('template'));
     }
 
     /**
@@ -455,7 +455,7 @@ class Controller
      */
     private function _yourlsproxy($link)
     {
-        $yourls = new YourlsProxy($this->_conf, $link);
+        $yourls = new YourlsProxy($this->_configuration, $link);
         if ($yourls->isError()) {
             $this->_error = $yourls->getError();
         } else {
