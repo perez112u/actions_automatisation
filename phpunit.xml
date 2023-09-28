@@ -3,7 +3,6 @@
   <coverage>
     <include>
       <directory suffix=".php">./lib</directory>
-      <directory suffix=".php">./vendor</directory>
     </include>
     <exclude>
       <file>./lib/Data/AbstractData.php</file>
@@ -19,7 +18,4 @@
   <logging>
     <testdoxHtml outputFile="log/testdox.html"/>
   </logging>
-  <php>
-    <ini name="memory_limit" value="256M" />
-  </php>
 </phpunit>
