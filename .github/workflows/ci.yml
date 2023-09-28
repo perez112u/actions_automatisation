@@ -30,14 +30,15 @@ jobs:
         indicators: true 
         output: both  
         thresholds: '50 75' 
+        
 
     # Etape pour executer l'action PHP Code Sniffer
     - name: PHP Code Sniffer (php-actions)
-      uses: php-actions/phpcs@v1.0.0
+      uses: php-actions/phpcs@v1
       with:
         php_version: 8.1
         path:  lib/ tst/
-        standard: .xml
+        standard: phpcs.xml
             
       
     # ... then your own project steps ...
