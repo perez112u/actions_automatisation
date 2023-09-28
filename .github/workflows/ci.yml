@@ -14,6 +14,8 @@ jobs:
         php_extensions: gd xdebug mbstring
         version: 9.6.11
         coverage_cobertura: coverage.cobertura.xml
+      env:
+        XDEBUG_MODE: coverage
 
     # Étape pour executer l'action Code Coverage Summary
     - name: Code Coverage Summary
