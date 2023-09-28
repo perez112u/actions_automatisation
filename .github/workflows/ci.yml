@@ -38,7 +38,7 @@ jobs:
       with:
         php_version: 8.1
         path: lib/
-        standard: psr
+        standard: PSR1
             
       
     # ... then your own project steps ...
