@@ -45,7 +45,7 @@ jobs:
         uses: php-actions/phpmd@v1
         with:
           php_version: 8.1
-          path: src/
+          path: lib/
           output: text
           ruleset: test/phpmd/ruleset.xml 
             
