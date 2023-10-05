@@ -117,7 +117,7 @@ class Controller
             throw new Exception(I18n::_('%s requires the PATH to end in a "%s". Please update the PATH in your index.php.', I18n::_('PrivateBin'), DIRECTORY_SEPARATOR), 5);
         }
         // load config from ini file, initialize required classes
-        $this->_init();
+        $this->init();
 
         switch ($this->_request->getOperation()) {
             case 'create':
@@ -158,7 +158,7 @@ class Controller
      * @access private
      * @throws Exception
      */
-    private function _init()
+    private function init()
     {
         $this->_configuration    = new Configuration;
         $this->_model   = new Model($this->_configuration);
