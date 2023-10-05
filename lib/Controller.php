@@ -118,7 +118,7 @@ class Controller
         }
 
         // load config from ini file, initialize required classes
-        $this->_init();
+        $this->init();
 
         switch ($this->_request->getOperation()) {
             case 'create':
@@ -159,7 +159,7 @@ class Controller
      * @access private
      * @throws Exception
      */
-    private function _init()
+    private function init()
     {
         $this->_configuration    = new Configuration;
         $this->_model   = new Model($this->_configuration);
@@ -196,7 +196,7 @@ class Controller
      * @access private
      * @return string
      */
-    private function _create()
+    private function create()
     {
         // Ensure last paste from visitors IP address was more than configured amount of seconds ago.
         ServerSalt::setStore($this->_model->getStore());
@@ -269,7 +269,7 @@ class Controller
      * @param  string $dataid
      * @param  string $deletetoken
      */
-    private function _delete($dataid, $deletetoken)
+    private function delete($dataid, $deletetoken)
     {
         try {
             $paste = $this->_model->getPaste($dataid);
@@ -305,7 +305,7 @@ class Controller
      * @access private
      * @param  string $dataid
      */
-    private function _read($dataid)
+    private function read($dataid)
     {
         if (!$this->_request->isJsonApiCall()) {
             return;
@@ -332,7 +332,7 @@ class Controller
      *
      * @access private
      */
-    private function _view()
+    private function view()
     {
         // set headers to disable caching
         $time = gmdate('D, d M Y H:i:s \G\M\T');
@@ -423,7 +423,7 @@ class Controller
      * @access private
      * @param string $type
      */
-    private function _jsonld($type)
+    private function jsonld($type)
     {
         if (
             $type !== 'paste' && $type !== 'comment' &&
@@ -453,7 +453,7 @@ class Controller
      * @access private
      * @param string $link
      */
-    private function _yourlsproxy($link)
+    private function yourlsproxy($link)
     {
         $yourls = new YourlsProxy($this->_configuration, $link);
         if ($yourls->isError()) {
