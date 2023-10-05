@@ -196,7 +196,7 @@ class Controller
      * @access private
      * @return string
      */
-    private function create()
+    private function _create()
     {
         // Ensure last paste from visitors IP address was more than configured amount of seconds ago.
         ServerSalt::setStore($this->_model->getStore());
@@ -269,7 +269,7 @@ class Controller
      * @param  string $dataid
      * @param  string $deletetoken
      */
-    private function delete($dataid, $deletetoken)
+    private function _delete($dataid, $deletetoken)
     {
         try {
             $paste = $this->_model->getPaste($dataid);
@@ -305,7 +305,7 @@ class Controller
      * @access private
      * @param  string $dataid
      */
-    private function read($dataid)
+    private function _read($dataid)
     {
         if (!$this->_request->isJsonApiCall()) {
             return;
@@ -332,7 +332,7 @@ class Controller
      *
      * @access private
      */
-    private function view()
+    private function _view()
     {
         // set headers to disable caching
         $time = gmdate('D, d M Y H:i:s \G\M\T');
@@ -423,7 +423,7 @@ class Controller
      * @access private
      * @param string $type
      */
-    private function jsonld($type)
+    private function _jsonld($type)
     {
         if (
             $type !== 'paste' && $type !== 'comment' &&
@@ -453,7 +453,7 @@ class Controller
      * @access private
      * @param string $link
      */
-    private function yourlsproxy($link)
+    private function _yourlsproxy($link)
     {
         $yourls = new YourlsProxy($this->_configuration, $link);
         if ($yourls->isError()) {
@@ -471,7 +471,7 @@ class Controller
      * @param  string $message
      * @param  array $other
      */
-    private function returnMessage($status, $message, $other = array())
+    private function _returnMessage($status, $message, $other = array())
     {
         $result = array('status' => $status);
         if ($status) {
